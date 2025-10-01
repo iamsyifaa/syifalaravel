@@ -4,11 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartemenController; 
 use App\Http\Controllers\SessionController;
 
-Route::get('sesi', [SessionController::class,'index'])->name('login');
-Route::post('sesi/login', [SessionController::class,'login']);
+// route untuk tamu (belum login)
+Route::middleware('iniTamu')->group(function () {
+    Route::get('sesi', [SessionController::class,'index'])->name('login');
+    Route::post('sesi/login', [SessionController::class,'login']);
+});
+
+// logout bisa diakses setelah login
 Route::get('sesi/logout', [SessionController::class,'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+// route yang butuh login
+Route::middleware('iniLogin')->group(function () {
     Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
