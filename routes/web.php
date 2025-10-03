@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DepartemenController; 
+use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SessionController;
 
 // route untuk tamu (belum login)
@@ -23,5 +24,6 @@ Route::middleware('iniLogin')->group(function () {
         return view('tampilan');
     });
 
-    Route::resource('departemen', DepartemenController::class);
+    Route::resource('departemen', DepartemenController::class)->middleware('iniLogin');
+    Route::resource('karyawan', KaryawanController::class)->middleware('iniLogin');
 });

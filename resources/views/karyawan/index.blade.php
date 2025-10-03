@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('layouts.app')
 @section('content')
 
 @if(session('success'))
@@ -20,7 +20,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Data Departemen</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Data Karyawan</h1>
                     
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -28,35 +28,37 @@
                             <h6 class="m-0 font-weight-bold text-primary">Sisfo Pegawai</h6>
                         </div>
                         <div class="card-body">
-                            <a class="btn btn-primary mb-3" href="{{ route('departemen.create') }}">Tambah Data</a>
+                            <a class="btn btn-primary mb-3" href="{{ route('karyawan.create') }}">Tambah Data</a>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Departemen</th>
+                                            <th>NIP</th>
+                                            <th>Nama Karyawan</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Gaji Karyawan</th>
+                                            <th>Alamat</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($departemen as $index => $d)
+                                        @foreach($karyawan as $k)
                                         <tr>
-                                            <td>{{ $index+1 }}</td>
-                                            <td>{{ $d->nama_departemen }}</td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $k->nip }}</td>
+                                            <td>{{ $k->nama_karyawan }}</td>
+                                            <td>{{ $k->jenis_kelamin }}</td>
+                                            <td>{{ $k->gaji_karyawan }}</td>
+                                            <td>{{ $k->alamat }}</td>
                                             <td>
-                                                <a class="btn btn-sm btn-primary" 
-                                                   href="{{ url('departemen/'.$d->kodedepartemen.'/edit') }}">
-                                                   Edit
-                                                </a>   
-                                                <form action="{{ url('departemen/'.$d->kodedepartemen)}}" 
-                                                      method="POST" style="display:inline-block">
-                                                    @csrf
-                                                    @method('Delete')
-                                                    <button class="btn btn-sm btn-danger" 
-                                                            onclick="return confirm('Apakah Anda Ingin Menghapus Data ?')">
-                                                        Delete
-                                                    </button>
-                                                </form>
+                                                <a href="{{ route('karyawan.edit', $k->nip) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                <form action="{{ route('karyawan.destroy', $k->nip) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin mau hapus {{ $k->nama_karyawan }}?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+
                                             </td>
                                         </tr>
                                         @endforeach
@@ -71,9 +73,6 @@
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
