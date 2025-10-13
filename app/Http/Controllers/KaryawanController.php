@@ -90,21 +90,32 @@ class KaryawanController extends Controller
             'gaji_karyawan'=>'required',
             'alamat'=>'required',
             'jenis_kelamin'=>'required',
+            'foto'=>'required |mimes:jpeg,jpg,png,gif'
         ],[
             'nip.required'=>'NIP Wajib Diisi',
             'nama_karyawan.required'=>'Nama Karyawan Wajib Diisi',
             'gaji_karyawan.required'=>'Gaji Karyawan Wajib Diisi',
             'alamat.required'=>'Alamat Karyawan Wajib Diisi',
             'jenis_kelamin.required'=>'Data Jenis Kelamin Wajib Diisi',
-    
+            'foto.required'=>'Foto Karyawan Wajib Diisi',
+            'foto.mimes'=>'Foto Diperbolehkan Berekstensi jpeg,jpg,png,gif'
     ]);
 
+     $foto_nama = null;
+
+    if ($request->hasFile('foto')) {
+        $foto_file = $request->file('foto');
+        $foto_ekstensi = $foto_file->extension();
+        $foto_nama = date('ymdhis').".".$foto_ekstensi;
+        $foto_file->move(public_path('foto'), $foto_nama);
+    }
     $data =[
         'nip' => $request->nip,
         'nama_karyawan' => $request->nama_karyawan,
         'gaji_karyawan' => $request->gaji_karyawan,
         'alamat' => $request->alamat,
         'jenis_kelamin' => $request->jenis_kelamin,
+        'foto' => $foto_nama,
     ];
     Karyawan::where('nip',$id)->update($data);
     return redirect('karyawan')->with('success', 'Karyawan Berhasil Diperbarui ');

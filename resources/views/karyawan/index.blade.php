@@ -34,6 +34,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Foto</th>
                                             <th>NIP</th>
                                             <th>Nama Karyawan</th>
                                             <th>Jenis Kelamin</th>
@@ -43,24 +44,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($karyawan as $k)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $k->nip }}</td>
-                                            <td>{{ $k->nama_karyawan }}</td>
-                                            <td>{{ $k->jenis_kelamin }}</td>
-                                            <td>{{ $k->gaji_karyawan }}</td>
-                                            <td>{{ $k->alamat }}</td>
-                                            <td>
-                                                <a href="{{ route('karyawan.edit', $k->nip) }}" class="btn btn-sm btn-primary">Edit</a>
-                                                <form action="{{ route('karyawan.destroy', $k->nip) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin mau hapus {{ $k->nama_karyawan }}?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
+                                         @foreach ($karyawan as $k)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td> <!-- No -->
 
-                                            </td>
-                                        </tr>
+                                                <!-- Foto -->
+                                                <td>
+                                                    @if($k->foto)
+                                                        <img src="{{ asset('foto/' . $k->foto) }}" width="80">
+                                                    @else
+                                                        <img src="{{ asset('foto/default.jpg') }}" width="80">
+                                                    @endif
+                                                </td>
+
+                                                <td>{{ $k->nip }}</td> <!-- NIP -->
+                                                <td>{{ $k->nama_karyawan }}</td> <!-- Nama Karyawan -->
+                                                <td>{{ $k->jenis_kelamin }}</td> <!-- Jenis Kelamin -->
+                                                <td>{{ $k->gaji_karyawan }}</td> <!-- Gaji -->
+                                                <td>{{ $k->alamat }}</td> <!-- Alamat -->
+
+                                                <td> <!-- Aksi -->
+                                                    <a href="{{ url('karyawan/'.$k->nip.'/edit') }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form onsubmit="return confirm('Yakin ingin menghapus data?')" 
+                                                        action="{{ url('karyawan/'.$k->nip) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

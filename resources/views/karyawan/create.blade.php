@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{ route('karyawan.store') }}" method="post">
+<form action="{{ route('karyawan.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -38,6 +38,12 @@
                             <option value="Wanita">Wanita</option>
                         </select>
                     </div>
+
+                    <div class="form-group mb-3">
+                        <label for="foto">Upload Foto Karyawan</label>
+                        <input type="file" class="form-control" id="foto" name="foto" required>
+                    </div>
+
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Simpan</button>
