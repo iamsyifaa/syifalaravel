@@ -41,7 +41,7 @@
 
                     <div class="form-group mb-3">
                         <label for="foto">Upload Foto Karyawan</label>
-                        <input type="file" class="form-control" id="foto" name="foto" required>
+                        <input type="file" class="form-control" id="foto" name="foto">
                     </div>
 
                 </div>

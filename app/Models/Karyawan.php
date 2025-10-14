@@ -10,9 +10,7 @@ class Karyawan extends Model
     use HasFactory;
 
     protected $table = 'karyawan';
-    protected $primaryKey = 'nip';   // <-- kasih tau Laravel
-    public $incrementing = false;    // kalau NIP bukan auto increment
-    protected $keyType = 'int';   // kalau nip varchar, kalau integer ubah ke 'int'
+    // menggunakan primary key default 'id' (sesuai migration)
 
     protected $fillable = [
         'nip',

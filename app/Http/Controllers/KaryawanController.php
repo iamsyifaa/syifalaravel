@@ -38,6 +38,7 @@ class KaryawanController extends Controller
             'gaji_karyawan'=>'required',
             'alamat'=>'required',
             'jenis_kelamin'=>'required',
+            'foto'=>'nullable|mimes:jpeg,jpg,png,gif'
         ],[
             'nip.required'=>'NIP Wajib Diisi',
             'nama_karyawan.required'=>'Nama Karyawan Wajib Diisi',
@@ -46,6 +47,13 @@ class KaryawanController extends Controller
             'jenis_kelamin.required'=>'Data Jenis Kelamin Wajib Diisi',
     
     ]);
+    $foto_nama = null;
+    if ($request->hasFile('foto')) {
+        $foto_file = $request->file('foto');
+        $foto_ekstensi = $foto_file->extension();
+        $foto_nama = date('ymdhis').".".$foto_ekstensi;
+        $foto_file->move(public_path('foto'), $foto_nama);
+    }
 
     $data =[
         'nip' => $request->input('nip'),
@@ -53,8 +61,9 @@ class KaryawanController extends Controller
         'gaji_karyawan' => $request->input('gaji_karyawan'),
         'alamat' => $request->input('alamat'),
         'jenis_kelamin' => $request->input('jenis_kelamin'),
+        'foto' => $foto_nama,
     ];
-    //dd($request->input('departemen_id));
+
     Karyawan::create($data);
     return redirect('karyawan')->with('success', 'Karyawan Berhasil Ditambahkan');
 
@@ -72,10 +81,10 @@ class KaryawanController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-{
-    $data = Karyawan::where('nip', $id)->first(); 
-    return view('karyawan.edit', compact('data'));
-}
+    {
+        $data = Karyawan::findOrFail($id);
+        return view('karyawan.edit', compact('data'));
+    }
 
 
     /**
@@ -90,25 +99,30 @@ class KaryawanController extends Controller
             'gaji_karyawan'=>'required',
             'alamat'=>'required',
             'jenis_kelamin'=>'required',
-            'foto'=>'required |mimes:jpeg,jpg,png,gif'
+            'foto'=>'nullable|mimes:jpeg,jpg,png,gif'
         ],[
             'nip.required'=>'NIP Wajib Diisi',
             'nama_karyawan.required'=>'Nama Karyawan Wajib Diisi',
             'gaji_karyawan.required'=>'Gaji Karyawan Wajib Diisi',
             'alamat.required'=>'Alamat Karyawan Wajib Diisi',
             'jenis_kelamin.required'=>'Data Jenis Kelamin Wajib Diisi',
-            'foto.required'=>'Foto Karyawan Wajib Diisi',
-            'foto.mimes'=>'Foto Diperbolehkan Berekstensi jpeg,jpg,png,gif'
+            'foto.mimes'=>'Foto Yang Diperbolehkan Sistem Berekstensi jpeg,jpg,png,gif'
     ]);
+    $karyawan = Karyawan::findOrFail($id);
 
-     $foto_nama = null;
+    $foto_nama = $karyawan->foto; // default keep existing
 
     if ($request->hasFile('foto')) {
+        // remove old file if exists
+        if ($karyawan->foto && file_exists(public_path('foto/'.$karyawan->foto))) {
+            @unlink(public_path('foto/'.$karyawan->foto));
+        }
         $foto_file = $request->file('foto');
         $foto_ekstensi = $foto_file->extension();
         $foto_nama = date('ymdhis').".".$foto_ekstensi;
         $foto_file->move(public_path('foto'), $foto_nama);
     }
+
     $data =[
         'nip' => $request->nip,
         'nama_karyawan' => $request->nama_karyawan,
@@ -117,7 +131,8 @@ class KaryawanController extends Controller
         'jenis_kelamin' => $request->jenis_kelamin,
         'foto' => $foto_nama,
     ];
-    Karyawan::where('nip',$id)->update($data);
+
+    $karyawan->update($data);
     return redirect('karyawan')->with('success', 'Karyawan Berhasil Diperbarui ');
     }
 
@@ -126,7 +141,11 @@ class KaryawanController extends Controller
      */
     public function destroy($id)
 {
-    $karyawan = Karyawan::findOrFail($id); // cari berdasarkan primaryKey (nip)
+    $karyawan = Karyawan::findOrFail($id);
+    // remove foto file if exists
+    if ($karyawan->foto && file_exists(public_path('foto/'.$karyawan->foto))) {
+        @unlink(public_path('foto/'.$karyawan->foto));
+    }
     $karyawan->delete(); // hapus hanya data ini
     return redirect('karyawan')->with('success', 'Karyawan Berhasil Dihapus');
 }

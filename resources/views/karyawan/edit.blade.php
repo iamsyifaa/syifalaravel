@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{url('karyawan/'.$data->nip)}}" method="post">
+<form action="{{url('karyawan/'.$data->id)}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="row">
@@ -38,6 +38,22 @@
                             <option value="Pria" {{$data->jenis_kelamin == 'Pria' ? 'selected' : ''}}>Pria</option>
                             <option value="Wanita" {{$data->jenis_kelamin == 'Wanita' ? 'selected' : ''}}>Wanita</option>
                         </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="foto">Foto Saat Ini</label>
+                        <div>
+                            @if($data->foto)
+                                <img src="{{ asset('foto/' . $data->foto) }}" style="max-width: 100px; max-height: 100px;" alt="foto-karyawan">
+                            @else
+                                <div class="text-muted">Belum ada foto</div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="foto">Ganti Foto Karyawan (opsional)</label>
+                        <input type="file" class="form-control" id="foto" name="foto">
                     </div>
                 </div>
                 <div class="card-footer">

@@ -52,8 +52,6 @@
                                                 <td>
                                                     @if($k->foto)
                                                         <img src="{{ asset('foto/' . $k->foto) }}" width="80">
-                                                    @else
-                                                        <img src="{{ asset('foto/default.jpg') }}" width="80">
                                                     @endif
                                                 </td>
 
@@ -64,9 +62,9 @@
                                                 <td>{{ $k->alamat }}</td> <!-- Alamat -->
 
                                                 <td> <!-- Aksi -->
-                                                    <a href="{{ url('karyawan/'.$k->nip.'/edit') }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <a href="{{ url('karyawan/'.$k->id.'/edit') }}" class="btn btn-primary btn-sm">Edit</a>
                                                     <form onsubmit="return confirm('Yakin ingin menghapus data?')" 
-                                                        action="{{ url('karyawan/'.$k->nip) }}" method="POST" class="d-inline">
+                                                        action="{{ url('karyawan/'.$k->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger btn-sm">Delete</button>
