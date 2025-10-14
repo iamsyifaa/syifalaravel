@@ -40,6 +40,7 @@
                                             <th>Jenis Kelamin</th>
                                             <th>Gaji Karyawan</th>
                                             <th>Alamat</th>
+                                            <th>Departemen</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -60,7 +61,7 @@
                                                 <td>{{ $k->jenis_kelamin }}</td> <!-- Jenis Kelamin -->
                                                 <td>{{ $k->gaji_karyawan }}</td> <!-- Gaji -->
                                                 <td>{{ $k->alamat }}</td> <!-- Alamat -->
-
+                                                <td>{{ optional($k->departemen)->nama_departemen ?? '' }}</td>
                                                 <td> <!-- Aksi -->
                                                     <a href="{{ url('karyawan/'.$k->id.'/edit') }}" class="btn btn-primary btn-sm">Edit</a>
                                                     <form onsubmit="return confirm('Yakin ingin menghapus data?')" 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\Departemen;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -13,8 +14,8 @@ class KaryawanController extends Controller
     public function index()
     {
         //
-        $karyawan = Karyawan::all();
-        return view('karyawan.index',['karyawan'=>$karyawan]);
+        $karyawan = Karyawan::with('departemen')->get();
+        return view('karyawan.index', ['karyawan' => $karyawan]);
     }
 
     /**
@@ -23,7 +24,8 @@ class KaryawanController extends Controller
     public function create()
     {
         //
-        return view('karyawan.create');
+        $departemen = Departemen::all();
+        return view('karyawan.create', compact('departemen'));
     }
 
     /**
@@ -61,6 +63,7 @@ class KaryawanController extends Controller
         'gaji_karyawan' => $request->input('gaji_karyawan'),
         'alamat' => $request->input('alamat'),
         'jenis_kelamin' => $request->input('jenis_kelamin'),
+        'departemen_id' => $request->input('departemen_id'),
         'foto' => $foto_nama,
     ];
 
@@ -83,7 +86,8 @@ class KaryawanController extends Controller
     public function edit($id)
     {
         $data = Karyawan::findOrFail($id);
-        return view('karyawan.edit', compact('data'));
+        $departemen = Departemen::all();
+        return view('karyawan.edit', compact('data','departemen'));
     }
 
 
@@ -129,6 +133,7 @@ class KaryawanController extends Controller
         'gaji_karyawan' => $request->gaji_karyawan,
         'alamat' => $request->alamat,
         'jenis_kelamin' => $request->jenis_kelamin,
+        'departemen_id' => $request->input('departemen_id'),
         'foto' => $foto_nama,
     ];
 

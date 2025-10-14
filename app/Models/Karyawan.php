@@ -18,6 +18,12 @@ class Karyawan extends Model
         'gaji_karyawan',
         'alamat',
         'jenis_kelamin',
+        'departemen_id',
         'foto',
     ];
+
+    public function departemen()
+    {
+        return $this->belongsTo('App\\Models\\Departemen', 'departemen_id');
+    }
 }

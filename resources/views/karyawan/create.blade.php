@@ -40,6 +40,16 @@
                     </div>
 
                     <div class="form-group mb-3">
+                        <label for="departemen_id">Departement</label>
+                        <select name="departemen_id" id="departemen_id" class="form-control" required>
+                            <option value="" disabled selected>-- Pilih Departemen --</option>
+                            @foreach ($departemen as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_departemen }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
                         <label for="foto">Upload Foto Karyawan</label>
                         <input type="file" class="form-control" id="foto" name="foto">
                     </div>

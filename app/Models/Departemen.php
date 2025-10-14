@@ -9,6 +9,10 @@ class Departemen extends Model
 {
     use HasFactory;
     protected $table = 'departemen';
-    protected $primarykey = 'kodedepartemen';
+    //protected $primarykey = 'kodedepartemen';
     protected $fillable = ['nama_departemen'];
+
+    public function Karyawan (){
+        return $this->hasMany('App\Models\Karyawan');
+    }
 }
