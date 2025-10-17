@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KaryawanController;
@@ -23,7 +24,7 @@ Route::middleware('iniLogin')->group(function () {
     Route::get('/tampilan', function () {
         return view('tampilan');
     });
-
+    
     Route::resource('departemen', DepartemenController::class)->middleware('iniLogin');
     Route::resource('karyawan', KaryawanController::class)->middleware('iniLogin');
 });

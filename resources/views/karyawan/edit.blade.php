@@ -41,6 +41,16 @@
                     </div>
 
                     <div class="form-group mb-3">
+                        <label for="departemen_id">Departement</label>
+                        <select name="departemen_id" id="departemen_id" class="form-control" required>
+                            <option value="" disabled>-- Pilih Departemen --</option>
+                            @foreach ($departemen as $d)
+                                <option value="{{ $d->id }}" {{ ($d->id == $data->departemen_id) ? 'selected' : '' }}>{{ $d->nama_departemen }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
                         <label for="foto">Foto Saat Ini</label>
                         <div>
                             @if($data->foto)
@@ -49,16 +59,6 @@
                                 <div class="text-muted">Belum ada foto</div>
                             @endif
                         </div>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="departemen_id">Departement</label>
-                        <select name="departemen_id" id="departemen_id" class="form-control" required>
-                            <option value="" disabled>-- Pilih Departemen --</option>
-                            @foreach ($departemen as $d)
-                                <option value="{{ $d->id }}" {{ ($d->id == $data->departemen_id) ? 'selected' : '' }}>{{ $d->nama_departemen }}</option>
-                            @endforeach
-                        </select>
                     </div>
 
                     <div class="form-group mb-3">
